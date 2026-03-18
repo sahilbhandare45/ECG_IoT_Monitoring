@@ -1,0 +1,10 @@
+pyserial
+requests
+numpy
+pandas
+scikit-learn
+fastapi
+uvicorn
+pydantic
+websockets
+pydantic-settings
