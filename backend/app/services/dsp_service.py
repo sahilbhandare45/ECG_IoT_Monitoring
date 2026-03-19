@@ -12,6 +12,12 @@ class DSPService:
         # 2. Bandpass Filter (0.5 - 40Hz)
         self.bp_b, self.bp_a = butter(2, [0.5, 40.0], btype='bandpass', fs=self.fs)
         self.bp_zi = lfilter_zi(self.bp_b, self.bp_a) * 0.0
+        
+        # 3. Moving Average Filter (lowpass smoothing, 5-point window)
+        kernel_size = 5
+        self.ma_b = np.ones(kernel_size) / kernel_size
+        self.ma_a = [1.0]
+        self.ma_zi = lfilter_zi(self.ma_b, self.ma_a) * 0.0
 
         # Pan-Tompkins specific states
         self.mwi_window = int(0.12 * self.fs)
@@ -71,6 +77,9 @@ class DSPService:
         # 2. Bandpass
         filtered_bp, self.bp_zi = lfilter(self.bp_b, self.bp_a, filtered_notch, zi=self.bp_zi)
         
-        return filtered_bp, sqi_status
+        # 3. Moving Average
+        filtered_ma, self.ma_zi = lfilter(self.ma_b, self.ma_a, filtered_bp, zi=self.ma_zi)
+        
+        return filtered_ma, sqi_status
 
 dsp_service = DSPService(sample_rate=200)
