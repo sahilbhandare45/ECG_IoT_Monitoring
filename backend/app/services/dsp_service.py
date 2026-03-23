@@ -62,7 +62,7 @@ class DSPService:
         if len(chunk) == 0:
             return np.array([]), "GOOD"
             
-        # Offset zero
+        # Offset zero (use mean subtraction to ensure signal is always centered/visible)
         chunk_c = chunk - np.mean(chunk) if len(chunk) > 5 else chunk - 512.0
             
         sqi_status = self.assess_sqi(chunk)

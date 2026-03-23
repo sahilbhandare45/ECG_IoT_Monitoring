@@ -9,10 +9,17 @@ export default function DashboardScreen() {
   const [status, setStatus] = useState('CONNECTING...');
   const [sqi, setSqi] = useState('GOOD');
 
+  const [packetCount, setPacketCount] = useState(0);
+
   // Subscribe to REAL filtered ECG data from Firebase
   useEffect(() => {
     const unsubscribe = subscribeToECG((data) => {
-      if (data.ecg_chunk && data.ecg_chunk.length > 0) setEcgData(data.ecg_chunk);
+      if (data.ecg_chunk && data.ecg_chunk.length > 0) {
+        setEcgData(data.ecg_chunk);
+        setPacketCount(c => c + 1);
+        // Track unique timestamps or data patterns in console
+        console.log("[Dashboard] First 5 values of chunk:", data.ecg_chunk.slice(0, 5));
+      }
       if (data.bpm) setBpm(data.bpm);
       if (data.status) setStatus(data.status);
     });
@@ -25,7 +32,10 @@ export default function DashboardScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.bedText}>BED 01 - PATIENT_01</Text>
+        <View>
+            <Text style={styles.bedText}>BED 01 - PATIENT_01</Text>
+            <Text style={{color: '#fff', fontSize: 10}}>Packets: {packetCount}</Text>
+        </View>
         <Text style={[styles.statusText, isAlert ? styles.alertText : null]}>
           {status}
         </Text>
@@ -33,19 +43,19 @@ export default function DashboardScreen() {
 
       {/* Main Waveform */}
       <View style={styles.wavePanel}>
-         <Text style={styles.leadLabel}>LEAD II - 25mm/s</Text>
-         <ECGWaveform latestChunk={ecgData} />
+        <Text style={styles.leadLabel}>LEAD II - 25mm/s</Text>
+        <ECGWaveform latestChunk={ecgData} />
       </View>
 
       {/* Vitals Panel */}
       <View style={styles.vitalsPanel}>
-         <View style={styles.vitalBox}>
-            <Text style={styles.vitalLabel}>HEART RATE</Text>
-            <View style={styles.bpmrow}>
-                <Text style={styles.bpmValue}>{bpm}</Text>
-                <Text style={styles.bpmUnit}> BPM</Text>
-            </View>
-         </View>
+        <View style={styles.vitalBox}>
+          <Text style={styles.vitalLabel}>HEART RATE</Text>
+          <View style={styles.bpmrow}>
+            <Text style={styles.bpmValue}>{bpm}</Text>
+            <Text style={styles.bpmUnit}> BPM</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -54,7 +64,7 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#be9090ff',
     paddingTop: 40,
   },
   header: {

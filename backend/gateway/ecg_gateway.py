@@ -51,7 +51,7 @@ for data in read_serial():
 
             payload = {
                 "patient_id": PATIENT_ID,
-                "ecg_chunk": filtered_chunk.tolist() if sqi == "GOOD" else [],
+                "ecg_chunk": filtered_chunk.tolist(), # Always send chunk to keep UI moving
                 "bpm": latest_bpm,
                 "status": status,
                 "timestamp": int(time.time() * 1000)
