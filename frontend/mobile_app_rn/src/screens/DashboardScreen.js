@@ -9,37 +9,14 @@ export default function DashboardScreen() {
   const [status, setStatus] = useState('CONNECTING...');
   const [sqi, setSqi] = useState('GOOD');
 
-  /* Uncomment once Firebase URL is valid
+  // Subscribe to REAL filtered ECG data from Firebase
   useEffect(() => {
     const unsubscribe = subscribeToECG((data) => {
-      if (data.ecg_chunk) setEcgData(data.ecg_chunk);
+      if (data.ecg_chunk && data.ecg_chunk.length > 0) setEcgData(data.ecg_chunk);
       if (data.bpm) setBpm(data.bpm);
       if (data.status) setStatus(data.status);
-      if (data.sqi) setSqi(data.sqi);
     });
     return () => unsubscribe();
-  }, []);
-  */
-
-  // MOCK DATA GENERATOR for UI testing without backend
-  useEffect(() => {
-    const interval = setInterval(() => {
-        // Generate a rough fake ECG shape batch
-        const chunk = [];
-        for(let i=0; i<40; i++) {
-           // baseline noise
-           let val = (Math.random() - 0.5) * 20; 
-           // fake QRS
-           if (i === 10) val = -50;
-           if (i === 12) val = 400;
-           if (i === 15) val = -30;
-           chunk.push(val);
-        }
-        setEcgData(chunk);
-        setBpm(Math.floor(Math.random() * 5 + 70));
-        setStatus('NORMAL');
-    }, 200);
-    return () => clearInterval(interval);
   }, []);
 
   const isAlert = status === 'ARRHYTHMIA' || status === 'TACHYCARDIA' || status === 'BRADYCARDIA';

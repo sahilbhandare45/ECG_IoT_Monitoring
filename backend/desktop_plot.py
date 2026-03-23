@@ -65,13 +65,16 @@ def update(frame):
         # Apply the SAME filter logic directly from the backend pipeline
         filtered_chunk, sqi_status = dsp_service.process_chunk(chunk)
         
-        # Roll display windows over
         n = len(chunk)
-        raw_display = np.roll(raw_display, -n)
-        raw_display[-n:] = chunk
-        
-        filtered_display = np.roll(filtered_display, -n)
-        filtered_display[-n:] = filtered_chunk
+        if n >= MAX_POINTS:
+            raw_display = chunk[-MAX_POINTS:]
+            filtered_display = filtered_chunk[-MAX_POINTS:]
+        else:
+            raw_display = np.roll(raw_display, -n)
+            raw_display[-n:] = chunk
+            
+            filtered_display = np.roll(filtered_display, -n)
+            filtered_display[-n:] = filtered_chunk
 
         line1.set_ydata(raw_display)
         line2.set_ydata(filtered_display)
