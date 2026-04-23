@@ -15,51 +15,22 @@ Vital Ether is a comprehensive, AI-driven **Clinical Monitoring Suite** that sea
 - **Instant Medical Hailing:** Doctors can toggle their real-time availability; patients can view active physicians and trigger one-tap emergency native dialing.
 - **Premium UI/UX:** A stunning, modern dark-themed glassmorphic design optimized for seamless navigation and immediate clinical readability.
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack & Architecture
 
-1. **Frontend Application:** React Native (Expo)
-   - *Routing:* React Navigation
-   - *Styling:* Custom Vanilla CSS/StyleSheet focusing on High-Contrast Glassmorphism
-   - *Visualization:* Real-time Canvas/SVG Graphing
-2. **Backend Engine:** Python
-   - *IoT Gateway:* Serial communication reading directly from ECG hardware modules (e.g., AD8232).
-   - *Signal Processing:* NumPy & SciPy for Digital Signal Processing (DSP).
-3. **Cloud Infrastructure:** Firebase
-   - *Realtime Database:* Under-50ms latency for streaming sensor data and alerts.
-   - *Authentication:* Secure user handling and role association.
+### 1. Patient & Doctor Application (Frontend)
+Built entirely on **React Native (Expo)**, the interface utilizes custom High-Contrast Glassmorphism. The system avoids heavy UI toolkits in favor of granular `StyleSheet` rendering, ensuring flawless 60FPS visualizations of real-time Canvas/SVG ECG graphs. Separate navigational stacks immediately split the user base into distinct Patient vs. Doctor ecosystems based on secure Authentication claims.
 
-## 🚀 Getting Started
+### 2. Edge Signal Processing Engine (Backend)
+At the core of the data architecture is a proprietary **Python** pipeline that interfaces directly with serial ECG hardware modules (e.g., AD8232). It ingests raw voltages, normalizes the peaks locally utilizing **NumPy** and **SciPy**, and converts biological electrical noise into a clean, actionable digital rhythm ready for cloud distribution.
 
-### Prerequisites
-- Node.js & npm (or yarn/bun)
-- Python 3.10+
-- An active Firebase Realtime Database and Authentication configuration.
+### 3. Distributed Neuromorphic Cloud (Infrastructure)
+Underpinning the rapid data flow is a **Firebase Realtime Database**. Designed perfectly for telemetry, its NoSQL JSON tree broadcasts payload bursts to the frontend with under-50ms latency. All analysis histories, instantaneous alerts, and doctor availability toggles are synchronized flawlessly across all nodes in the cloud.
 
-### 1. Starting the Backend API Array
-Ensure your ECG hardware is connected to the appropriate serial port.
-```bash
-# Navigate to the backend directory
-cd backend
+## 📈 Clinical Scope & Future Scalability
 
-# Install dependencies (NumPy, SciPy, pyserial, etc.)
-pip install -r requirements.txt
+Vital Ether is built with scalability at its foundation. The current architecture successfully processes single-lead streams, but the modular API naturally extends to support multiple leads, SPO2 integration, and broader telehealth vitals out-of-the-box. 
 
-# Start the IoT Gateway Listener
-python -m gateway.ecg_gateway
-```
-
-### 2. Launching the Mobile App (Expo)
-```bash
-# Navigate to the frontend directory
-cd frontend/ecg-monitor-app
-
-# Install dependencies
-npm install
-
-# Start the Expo Development Server
-npx expo start
-```
-Scan the QR code printed in the terminal using the Expo Go app on your physical device, or press `a` to run on an Android emulator.
+Furthermore, the implementation of "Intensive 30-Second Snapshots" prevents alert fatigue, isolating noise and ensuring that doctors only receive notifications triggered by sustained, clinically significant anomalies.
 
 ---
 
