@@ -1,50 +1,66 @@
-# Welcome to your Expo app 👋
+# 🫀 Vital Ether - Clinical ECG Monitoring Suite
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Vital Ether is a comprehensive, AI-driven **Clinical Monitoring Suite** that seamlessly bridges the gap between raw IoT bio-sensor data and actionable medical insights. Combining a robust hardware pipeline, a predictive machine-learning engine, and a premium glassmorphic mobile application, this ecosystem delivers real-time cardiac monitoring and instantaneous patient-doctor communication.
 
-## Get started
+## 🌟 Key Features
 
-1. Install dependencies
+- **Real-Time IoT Telemetry:** High-frequency, low-latency streaming of single-lead ECG data via Python-based backend architectures.
+- **Advanced DSP & AI Pipeline:** 
+  - Dynamic Noise Filtering (Notch, Bandpass, Moving Average) for clean waveform plotting.
+  - Real-time PQRST Wave Detection & BPM Calculation.
+  - Cardiac anomaly classification (Tachycardia, Bradycardia, Arrhythmia estimations).
+- **Role-Based Access Control (RBAC):** Distinct application portals for Doctors and Patients secured by Firebase Authentication.
+- **Clinical Dashboard (Doctor Role):** Multi-patient overview, instant neural anomaly alerts, and live network node efficiency monitoring.
+- **Patient Dashboard:** Live ECG waveform plotting, 30-second intensive snapshot analysis, AI-driven health history logs, and predictive insights.
+- **Instant Medical Hailing:** Doctors can toggle their real-time availability; patients can view active physicians and trigger one-tap emergency native dialing.
+- **Premium UI/UX:** A stunning, modern dark-themed glassmorphic design optimized for seamless navigation and immediate clinical readability.
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Technology Stack
 
-2. Start the app
+1. **Frontend Application:** React Native (Expo)
+   - *Routing:* React Navigation
+   - *Styling:* Custom Vanilla CSS/StyleSheet focusing on High-Contrast Glassmorphism
+   - *Visualization:* Real-time Canvas/SVG Graphing
+2. **Backend Engine:** Python
+   - *IoT Gateway:* Serial communication reading directly from ECG hardware modules (e.g., AD8232).
+   - *Signal Processing:* NumPy & SciPy for Digital Signal Processing (DSP).
+3. **Cloud Infrastructure:** Firebase
+   - *Realtime Database:* Under-50ms latency for streaming sensor data and alerts.
+   - *Authentication:* Secure user handling and role association.
 
-   ```bash
-   npx expo start
-   ```
+## 🚀 Getting Started
 
-In the output, you'll find options to open the app in a
+### Prerequisites
+- Node.js & npm (or yarn/bun)
+- Python 3.10+
+- An active Firebase Realtime Database and Authentication configuration.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+### 1. Starting the Backend API Array
+Ensure your ECG hardware is connected to the appropriate serial port.
 ```bash
-npm run reset-project
+# Navigate to the backend directory
+cd backend
+
+# Install dependencies (NumPy, SciPy, pyserial, etc.)
+pip install -r requirements.txt
+
+# Start the IoT Gateway Listener
+python -m gateway.ecg_gateway
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Launching the Mobile App (Expo)
+```bash
+# Navigate to the frontend directory
+cd frontend/ecg-monitor-app
 
-## Learn more
+# Install dependencies
+npm install
 
-To learn more about developing your project with Expo, look at the following resources:
+# Start the Expo Development Server
+npx expo start
+```
+Scan the QR code printed in the terminal using the Expo Go app on your physical device, or press `a` to run on an Android emulator.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+> **Disclaimer:** This application is built as an academic proof-of-concept and should not be used as a primary diagnostic tool in place of certified hospital-grade equipment. Always consult a licensed medical professional for cardiac health concerns.
